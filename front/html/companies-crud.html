@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<link rel="stylesheet" href="./css/bootstrap.css">
+<link rel="stylesheet" href="./css/modern-business.css">
+<link rel="stylesheet" href="./css/starter-template.css">
+
+<script src="./js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="http://requirejs.org/docs/release/2.1.5/comments/require.js"></script>
+
+
+
+<script>
+    function pressed() {
+        $(".cl1").show(100);
+        $(".cl2").hide(100);
+        $(".cl3").hide(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed2() {
+        $(".cl1").hide(100);
+        $(".cl2").show(100);
+        $(".cl3").hide(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed3() {
+        $(".cl1").hide(100);
+        $(".cl2").hide(100);
+        $(".cl3").show(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed4() {
+        $(".cl1").hide(100);
+        $(".cl2").hide(100);
+        $(".cl3").hide(100);
+        $(".cl4").show(100);
+    }
+</script>
+<style>
+    .cl1 {}
+    
+    .cl2 {
+        display: none;
+    }
+    
+    .cl3 {
+        display: none;
+    }
+    
+    .cl4 {
+        display: none;
+    }
+    
+    .button-add-companies {
+        padding-top: 10px;
+    }
+</style>
+
+<!-- Page Content -->
+<div class="container">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Управление списком компаний</h1>
+            <ol class="breadcrumb">
+                <li><a href="index.html">Домашняя страница</a>
+                </li>
+                <li><a href="client.html">Личный кабинет</a>
+                </li>
+                <li class="active">Управление списком компаний</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar Column -->
+        <div class="col-md-3">
+            <button onclick=show() class="list-group-item button-list-companies" onclick="pressed()">
+                        Список компаний
+                    </button>
+            <button class="list-group-item button-add-companies" onclick="pressed2()"> Добавить</button>
+            <button class="list-group-item button-delete-companies" onclick="pressed3()"> Удалить</button>
+            <button class="list-group-item button-update-companies" onclick="pressed4()"> Редактировать</button>
+        </div>
+        <div class="col-md-9 cl1" id="showAll">
+            <!-- Show users div -->
+
+        </div>
+        <div class="col-md-4 cl2">
+            <form id="form1" action="${add_company}" method="post" modelAttribute="company">
+                <div class="input-group">
+                    Название: <input name="name" type="text" ng-model="name" required/>
+                </div>
+                <br>
+                <div class="input-group">
+                    Адрес: <input name="address" type="text" ng-model="address" required/>
+                </div>
+                <br><br>
+                <div class="input-group">
+                    УНП: <input name="unp" type="number" min="100000000" max="999999999" ng-model="unp" required/>
+                </div>
+
+                <div class="input-group">
+                    Форма хозяйствования: <select name="typeOfProperty" class="form-control" ng-model="typeOfProperty" required>
+                            <option>ОАО</option>
+                            <option>ООО</option>
+                            <option>ИП</option>
+                        </select>
+                </div>
+                <br>
+                <button type="submit" form="form1" class="btn btn-primary btn-block"> Добавить</button>
+            </form>
+        </div>
+        <div class="col-md-3 cl3">
+            <form action="${delete_company}">
+                ID:
+                <input type="number" ng-model="idDelete" name="idDelete" required/>
+                <br/>
+                <button type="submit" href="/delete-company" class="btn btn-primary btn-block">
+                            Удалить
+                        </button>
+            </form>
+        </div>
+
+        <div class="cl4">
+
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+    function show() {
+
+        axios.get("http://localhost:8084/companies")
+            .then(function(responce) {
+                console.log(responce);
+                document.getElementById("showAll").innerHTML = JSON.stringify(responce.data);
+            })
+            .catch(error => console.log('error', error));
+    }
+</script>

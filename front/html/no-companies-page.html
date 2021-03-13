@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="./css/bootstrap.css">
+<link rel="stylesheet" href="./css/modern-business.css">
+
+<script src="./js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function pressed() {
+        $(".cl1").show(100);
+        $(".cl2").hide(100);
+        $(".cl3").hide(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed2() {
+        $(".cl1").hide(100);
+        $(".cl2").show(100);
+        $(".cl3").hide(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed3() {
+        $(".cl1").hide(100);
+        $(".cl2").hide(100);
+        $(".cl3").show(100);
+        $(".cl4").hide(100);
+    }
+
+    function pressed4() {
+        $(".cl1").hide(100);
+        $(".cl2").hide(100);
+        $(".cl3").hide(100);
+        $(".cl4").show(100);
+    }
+</script>
+<style>
+    .main {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20ex;
+        width: 80ex;
+    }
+    
+    .btn {
+        width: 20ex;
+        margin-left: 40%;
+        margin-right: -60%;
+    }
+</style>
+
+
+<div class="main">
+    <h4>Для проведения анализа необходимо добавить данные о компании</h4>
+    <br><br>
+</div>
+<a href="companies-crud.html" class="btn btn-primary"> Подтвердить</a>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/mvc
+	   http://www.springframework.org/schema/context
+	   http://www.springframework.org/schema/context/spring-context.xsd
+	   http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+    <!--find property file. See bean id='dataSource' for example ${jdbc.hsqldb.driverClass}-->
+    <context:property-placeholder location="classpath:util.properties" />
+    <context:annotation-config/>
+    <context:component-scan base-package="com.bsuir"/>
+
+    <!-- find repository classes -->
+    <jpa:repositories base-package="com.bsuir.repository"/>
+
+    <!-- XML Bean Definitions -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.hsqldb.driverClass}" />
+        <property name="url" value="${jdbc.hsqldb.url}" />
+        <property name="username" value="${jdbc.hsqldb.username}" />
+        <property name="password" value="${jdbc.hsqldb.password}" />
+    </bean>
+
+
+
+
+    <!-- REST template configuration -->
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+
+    <!--Do not forget activate @Transactional JPA annotation with <annotation-driven/>-->
+    <!-- JPA Persistence Context and EntityManager configuration -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
+        <!--packagesToScan - search Entity and mapping them -->
+        <property name="packagesToScan">
+        <list>
+            <value>com.bsuir.model</value>
+            <value>com.bsuir.entity</value>
+        </list>
+        </property>
+        <property name="persistenceUnitName" value="PersistenceUnit"/>
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" >
+                <property name="generateDdl" value="true" />
+                <property name="showSql" value="false" />
+            </bean>
+        </property>
+        <property name="jpaProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL92Dialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">false</prop>
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+
+    <!-- Automatic Transaction Participation-->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+
+    <!--not uses but could autowired in JDBCExample bean-->
+    <!--     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+          <property name="dataSource" ref="dataSource"></property>
+      </bean>
+       -->
+</beans>

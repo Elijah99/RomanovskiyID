@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<link rel="stylesheet" href="./css/bootstrap.css">
+<link rel="stylesheet" href="./css/modern-business.css">
+
+<script src="./js/bootstrap.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    function onLoad() {
+        $(".coeffs").hide(100);
+    }
+
+    function showCoeffs() {
+        $(".coeffs").show(100);
+
+        var long_term_duties = document.getElementById("long_term_duties").value;
+        var Assets = document.getElementById("assets").value;
+        var Equity = document.getElementById("equity").value;
+        var short_term_obligations = document.getElementById("short_term_obligations").value;
+        var fixed_assets = document.getElementById("fixed_assets").value;
+        var current_assets = document.getElementById("current_assets").value;
+
+        var coeff1 = Equity / Assets;
+        var coeff2 = (parseFloat(long_term_duties) + parseFloat(short_term_obligations)) / Equity;
+        var coeff3 = (Equity - fixed_assets) / current_assets;
+
+        document.getElementById('sp1').textContent = coeff1.toFixed(2);
+        document.getElementById('sp2').textContent = coeff2.toFixed(2);
+        document.getElementById('sp3').textContent = coeff3.toFixed(2);
+
+        if (coeff1 >= 0.5) {
+            document.getElementById('sp1').setAttribute("style", "color:green");
+        } else {
+            document.getElementById('sp1').setAttribute("style", "color:red");
+        }
+        if (coeff2 <= 0.7) {
+            document.getElementById('sp2').setAttribute("style", "color:green");
+        } else {
+            document.getElementById('sp2').setAttribute("style", "color:red");
+        }
+        if (coeff3 >= 0.5) {
+            document.getElementById('sp3').setAttribute("style", "color:green");
+        } else {
+            document.getElementById('sp3').setAttribute("style", "color:red");
+        }
+    }
+</script>
+<style>
+    .coeffs {
+        display: none;
+    }
+    
+    .btn {
+        width: 15ex;
+    }
+</style>
+
+<!-- Page Content -->
+<div class="container" onload="onLoad()">
+
+    <!-- Page Heading/Breadcrumbs -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">Финансовая устойчивость</h1>
+            <ol class="breadcrumb">
+                <li><a href="index.html">Домашняя страница</a>
+                </li>
+                <li><a href="fin-analysis.html">Анализ показателей</a></li>
+                <li class="active">Финансовая устойчивость</li>
+            </ol>
+        </div>
+    </div>
+    <form id="form1" action="" method="post" modelAttribute="company">
+        <div class="col-lg-3">
+            Введите данные
+            <!-- <select id="company" name="company" array="companies" class="form-control" ng-model="company">
+                    <c:forEach items="${companies}" var="company">
+                        <option name="company" value="${company}" ng-model="company">
+                                ${company.typeOfProperty} ${company.name}
+                        </option>
+                    </c:forEach>
+                </select>
+            -->
+            <br>
+            <div class="data">
+                Дата:
+                <input id="date" name="date" type="date" ng-model="date">
+                <br> Активы:
+                <br>
+                <input id="assets" name="assets" type="number" ng-model="assets">
+                <br> Собственный капитал:
+                <br>
+                <input id="equity" name="equity" type="number" ng-model="equity">
+                <br> Долгосрочные обязательства:
+                <input id="long_term_duties" name="long_term_duties" type="number" ng-model="long_term_duties">
+                <br> Краткосрочные обязательства:
+                <input id="short_term_obligations" name="short_term_obligations" type="number" ng-model="short_term_obligations"> Внеоборотные активы:
+                <br>
+                <input id="fixed_assets" name="fixed_assets" type="number" ng-model="fixed_assets">
+                <br> Оборотные активы:
+                <br>
+                <input id="current_assets" name="current_assets" type="number" ng-model="current_assets">
+                <br>
+                <br><br>
+                <button type="submit" form="form1" class="btn btn-primary"> Сохранить</button>
+                <br><br>
+                <button type="button" class="btn btn-primary" onclick="showCoeffs()">Рассчитать</button>
+            </div>
+        </div>
+
+        <div class="coeffs col-md-6">
+            Коэффициент автономии: <span id="sp1" class="sp1"> 0</span>
+            <br> Коэффициент капитализации: <span id="sp2" class="sp2">0</span>
+            <br> Коэффициент обеспеченности собственными оборотными средствами: <span id="sp3" class="sp3">0</span>
+            <br>
+        </div>
+    </form>
